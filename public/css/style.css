@@ -1,0 +1,519 @@
+	/*--------------------[no margin - default font - no text decoration]--------------------*/
+
+	* {
+		margin: 0;
+		font-family: sans-serif;
+		text-decoration: none;
+				color: #6a6a6a;
+	}
+
+	/*--------------------[text size]--------------------*/
+
+	.size-10px {
+	 	font-size: 10px;
+	}
+
+	.size-11px {
+		font-size: 11px;
+	}
+
+	.size-13px {
+		font-size: 13px;
+	}
+
+	.size-15px {
+	 	font-size: 15px;
+	}
+
+	.size-20px {
+	 	font-size: 20px;
+	}
+
+	/*--------------------[align]--------------------*/
+
+	.center {
+		text-align: center;
+	}
+
+	.left {
+		text-align: left;
+	}
+
+	.right {
+		text-align: right;
+	}
+
+	/*--------------------[colors]--------------------*/
+
+	.weku-color {
+		color: #ff722d;
+	}
+
+	.color-black {
+		color: black;
+	}
+
+	.color-white {
+		color: white;
+	}
+
+	/* COLOR TILE */
+	.col-tlit {
+		color: #919191
+	}
+
+	/*--------------------[background colors]--------------------*/
+
+	.weku-color-background {
+		background: #f59566;
+	}
+
+	.weku-color-green {
+		background: rgb(121, 249, 134);
+	}
+
+	.weku-color-blue {
+		background: rgb(64, 156, 201);
+	}
+
+	.weku-color-transaction {
+		background: #25d8bf;
+	}
+
+	.weku-color-black {
+		color: #6a6a6a;
+	}
+
+	/*--------------------[paddings]--------------------*/
+
+	.paddingLados {
+		padding: 2px 20px;
+	}
+
+	.paddingBlocks {
+		padding: 4px 0 0px 0;
+	}
+
+	.paddingOperations {
+		padding: 3px 0 1px 0;
+	}
+
+	.paddingTransaction {
+		padding: 3px 0 1px 0;
+	}
+
+	.paddingTop {
+		padding-top: 10px;
+	}
+
+	/*--------------------[margin]--------------------*/
+
+	.marginLados {
+		margin: 0 5px;
+	}
+
+	/*--------------------[margin]--------------------*/
+
+	.shadow {
+		box-shadow: 5px 5px 10px grey;
+	}
+
+	/*--------------------[general selectors]--------------------*/
+
+	.header {
+		display: inline-block;
+		width: 100%;
+		border-bottom: 1px solid #ccc;
+	 	height: 40px;
+		background: #f1f1f1;
+		position: fixed;
+		z-index: 1;
+	}
+
+	.logo, figure {
+    	display: inline-block;
+    	margin: 0px 0 0 15px;
+	}
+
+	.logo figure:hover {
+		-ms-transform: rotate(20deg); /* IE 9 */
+  	-webkit-transform: rotate(20deg); /* Safari */
+  	transform: rotate(20deg); /* Standard syntax */
+	}
+
+	.title {
+		display: inline-block;
+    margin: 0px 25px;
+    position: absolute;
+	}
+
+	.title h1 {
+		font-family: 'Dancing Script', cursive;
+		color: #6a6a6a;
+	}
+
+	.title h1:hover {
+		font-family: 'Dancing Script', cursive;
+		color: #FF6341;
+		text-shadow: 1px 1px #4A4A4A;
+	}
+
+	.menu {
+   	display: inline-block;
+    float: right;
+    margin: 15px 30px;
+
+	}
+
+	.menu li{
+		display: inline-block;
+		padding: 0 10px;
+		text-decoration: none;
+	}
+
+	.menu a{
+		text-decoration: none;
+		color: #A1A1A0;
+
+	}
+
+	.wekunow {
+		text-align: center;
+		padding: 158px 0px;
+	}
+
+	.wekunow h2 {
+		padding: 20px 0;
+	}
+
+	.author {
+		padding: 0 10px;
+	}
+
+	.title {
+		padding: 0 10px;
+	}
+
+	.net_votes {
+		padding: 0 10px;
+	}
+
+	/*--------------------[witness]--------------------*/
+
+	.witness-title {
+    padding: 70px 0 0 20px;
+		color: #6a6a6a;
+	}
+
+	.witness-description {
+		margin: 20px 0 20px 20px;
+		color: #6a6a6a;
+	}
+
+	.witness-table {
+		border: 1px solid #ccc;
+		margin: 0px 20px;
+		text-align: center;
+	}
+
+	.witness-header {
+		margin: auto;
+		border-collapse: collapse;
+	}
+
+	.witness-header > td > th {
+		border: 1px solid #ccc;
+	}
+
+
+	.witness-header th {
+		background: #ff732d;
+	}
+
+	.witness-header h4 {
+		width: 90px;
+  	padding: 0 20px;
+		color: white;
+	}
+
+	.tbody td {
+		border: 1px solid #ccc;
+	}
+
+	.tbody h4 {
+		font-size: 12px;
+		color: black;
+	}
+
+	.imginfo {
+		border-radius: 50%;
+	}
+
+	.witness-pro {
+		margin: 5px;
+	}
+
+	.witness-thr{
+		margin: 5px;
+	}
+
+	.percentage {
+		background-color: #25d8bf;
+		color: white;
+		padding: 3px 15px;
+	}
+
+	.lastBlock {
+		background-color: rgb(37, 226, 56);
+		color: white;
+		padding: 3px 15px;
+	}
+
+	.wkdVersion {
+		background-color: rgb(1, 251, 169);
+		color: white;
+		padding: 3px 15px;
+	}
+
+	/*--------------------[user explorer]--------------------*/
+	.sidenav {
+		height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    overflow-x: hidden;
+    text-align: center;
+    top: 45px;
+	}
+
+	.container {
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  margin: 0px 5px;
+	}
+
+	.img img {
+	  border-radius: 50%;
+	  margin: 20px 0;
+	}
+
+	.placeholder {
+		margin: 5px 0 0 0;
+	}
+
+	.submit {
+		border: none;
+		color: white;
+		padding: 5px 15px;
+		border-radius: 3px;
+		margin: 5px 0px;
+		background: #ff712d;
+	}
+
+	.submit:hover {
+		border: none;
+		color: white;
+		padding: 5px 15px;
+		border-radius: 3px;
+		margin: 5px 0px;
+		background-image: linear-gradient(to right, rgb(18, 186, 212), #00ffa1);
+	}
+
+	.container-1 {
+	  margin: 15px 5px 0px 5px;
+	}
+
+	#myProgress {
+	  width: 100%;
+	  background: #ccc;
+	}
+
+	#myBar {
+	  width: 10%;
+	  height: 20px;
+	  background-color: #ff722d;
+	  text-align: center;
+	  line-height: 24px;
+	  color: white;
+	}
+
+	.voting-power {
+	  margin: 20px 0 10px 0;
+	}
+
+	.container-2 {
+	  margin: 5px 5px 0px 5px;
+	}
+
+	.container-2 p {
+		margin: 10px 0;
+	}
+
+	.slidecontainer {
+	  width: 100%;
+	}
+
+	.slider {
+	  -webkit-appearance: none;
+	  width: 100%;
+	  height: 20px;
+	  background: #ccc;
+	  outline: none;
+	}
+
+	.slider::-webkit-slider-thumb {
+	  -webkit-appearance: none;
+	  appearance: none;
+	  width: 25px;
+	  height: 20px;
+	  background: #ff722d;
+	  cursor: pointer;
+	}
+
+	.slider::-moz-range-thumb {
+	  width: 25px;
+	  height: 20px;
+	  background: #4CAF50;
+	  cursor: pointer;
+	}
+
+	.container-3 {
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin: 0 5px;
+	}
+
+	.container-3 h4 {
+		margin: 5px 0px;
+	}
+
+	.table {
+		margin: 0 0 5px 0;
+	}
+
+	.table th {
+		border: 1px solid #ccc;
+	}
+
+	.table td {
+		border: 1px solid #ccc;
+	}
+
+	.container-3 table {
+		margin: auto;
+		padding: 0;
+		border-collapse: collapse;
+	}
+
+	.container-4 {
+		border: 1px solid #ccc;
+		margin: 10px 5px;
+		border-radius: 5px;
+	}
+
+	.container-4:hover {
+	  border: 1px solid #ff702d;
+	  margin: 10px 5px;
+	  border-radius: 5px;
+	}
+
+	.container-4 h4 {
+		margin: 10px;
+	}
+
+	.main {
+		margin-left: 250px;
+    padding: 0px 10px;
+    padding-top: 45px;
+	}
+
+	/*--------------------[history]--------------------*/
+
+	.main-div {
+		border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+	}
+
+	.Witneeses {
+		text-align: center;
+	}
+
+	.Witneeses ul {
+		display: inline-block;
+	}
+
+	.Witneeses li {
+		display: inline-block;
+    border: 1px solid #ccc;
+    width: 110px;
+    padding: 20px 0;
+    margin: 5px -8px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px grey;
+	}
+
+	.imgWitneesVote {
+		border-radius: 50%;
+		padding: 0 20px;
+	}
+
+	.history {
+		border: 1px solid #ccc;
+		word-break: break-all;
+    border-radius: 5px;
+	}
+
+	.generalHistory {
+		transform: rotate(180deg);
+	}
+
+	.generalHistory tr {
+		transform: rotate(-180deg);
+	}
+
+	.historyTable {
+		margin: auto;
+		width: 100%;
+	}
+
+	.historyTable th {
+		text-align: center;
+    border: 1px solid #ccc;
+    padding: 15px 0;
+    background: #ff712d;
+    color: white;
+		font-size: 13px;
+	}
+
+	.historyTable td {
+		border: 1px solid #ccc;
+		padding: 10px 0;
+	}
+
+	.historyTd {
+		width: 57%;
+	}
+
+	.jsonMetadata {
+    margin: 5px 0;
+	}
+
+
+	/*--------------------[footer]--------------------*/
+
+	.footer {
+		background: #d5d5d5;
+		text-align: center;
+		margin: 15px 0 0 0;
+		padding: 20px 0;
+		color: #6a6a6a;
+		border-top: 1px solid #ccc;
+	}
+
+	.footer p {
+		font-family: 'Dancing Script', cursive;
+		font-size:
+	}

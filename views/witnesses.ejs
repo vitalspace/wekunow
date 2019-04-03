@@ -1,0 +1,36 @@
+  <%include partials/head.ejs%>
+
+  <div class="witness-title">
+    <h2>Witnneses Weku</h2>
+  </div>
+  <div class="witness-description">
+    <h4>Complete list of the Witnesses Selected by the Weku Team.</h4>
+  </div>
+
+  <div class="witness-table">
+  <table class="witness-header">
+    <tr>
+      <th><h4>Rank</h4></th>
+      <th><h4>Witness</h4></th>
+      <th><h4>Votes</h4></th>
+      <th><h4>%</h4></th>
+      <th><h4>Missed blocks</h4></th>
+      <th><h4>Last block</h4></th>
+      <th><h4>Price feed</h4></th>
+      <th>
+        <p><h4>Reg Fee</h4></p>
+        <p><h4>APR</h4></p>
+        <p><h4>Block Size</h4></p>
+      </th>
+      <th><h4>Weku Version</h4></th>
+    </tr>
+    <tbody class="tbody">
+    </tbody>
+  </table>
+</div>
+
+
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+<script src="http://localhost:3000/js/witnesses.js"></script>
+
+<%include partials/footer.ejs%>

@@ -1,0 +1,573 @@
+<% include partials/head.ejs %>
+
+<% let prueba = test %>
+
+<div class="sidenav size-13px">
+  <div class="container shadow">
+    <div class="img">
+      <img class="imgProfile" src="" width="80" height="80" alt="">
+    </div>
+    <div class="reputation">
+      <p id="reputationP"><span class="rep size-15px color-white"></span></p>
+    </div>
+    <div class="userame">
+      <p><span class="usernameW"></span></p>
+    </div>
+    <div class="description">
+      <p><span class="about"></span></p>
+    </div>
+    <div class="web">
+      <p><img class="imgLink" src="" width="15"><span class="website"> </span></p>
+    </div>
+    <div class="follows-location">
+      <p><img class="imgLocation" src="" width="15"><span class="location"></span></p>
+    </div>
+    <div class="userSearch">
+      <form action="/@" method="GET">
+        <label for="u"></label>
+        <input class="placeholder center" type="text" name="u" placeholder="Enter a name without @">
+        <input class="submit" type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+  <div class="container-1">
+    <div id="myProgress" class="shadow">
+      <div id="myBar"><span class="vontingPowerbar color-white"></span></div>
+    </div>
+    <div class="voting-power">
+      <p><span class="vontingPower"></span> % Voting Power</p>
+    </div>
+  </div>
+  <div class="container-2">
+    <div class="slidecontainer">
+      <input type="range" min="1" max="100" value="100" class="slider shadow" id="myRange">
+      <p>Percentage: <span id="demo"></span></p>
+      <p>Upvote value:$ <span id="demo1"></span></p>
+    </div>
+  </div>
+	<div class="container-3 shadow">
+		<h4 class="weku-color-black ">Wallet info</h4>
+    <div class="table">
+      <table>
+  			<tr>
+  				<td>SP</td>
+          <td><span class="power"></span></td>
+  			</tr>
+        <tr>
+          <td>WEKU</td>
+          <td><span class="balance"></span></td>
+        </tr>
+        <tr>
+          <td>WKD</td>
+          <td><span class="wkdollars"></span></td>
+        </tr>
+  		</table>
+    </div>
+	</div>
+	<div class="container-4 shadow">
+		<a href="http://main.weku.io/@<%=prueba%>"><h4 class="weku-color"><img class="imgProfileLink" src="" width="15"> View Account on weku.io</h4></a>
+	</div>
+</div>
+
+<div class="main">
+  <div class="main-div">
+    <div class="witness-div">
+      <h2 class="weku-color-black">Witness votes</h2>
+      <div class="Witneeses">
+
+      </div>
+    </div>
+    <div class="apps-div">
+
+    </div>
+  </div>
+  <div class="history size-10px">
+    <table class="historyTable">
+      <tr>
+        <th>Datetime</th>
+        <th>Block number</th>
+        <th>Operation</th>
+        <th>Transaction ID</th>
+      </tr>
+      <tbody class="generalHistory">
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+<script>
+	const wkd = steem;
+	wkd.api.setOptions({ url: 'wss://standby.weku.io:8190' });
+	wkd.config.set('address_prefix', 'WKA');
+	wkd.config.set('chain_id','b24e09256ee14bab6d58bfa3a4e47b0474a73ef4d6c47eeea007848195fa085e');
+
+  let upvote_value;
+	let recent_claims;
+	let reward_balance;
+	let price_last;
+  let witness_votes = [];
+
+  let log10 = (str) => {
+  	const leadingDigits = parseInt(str.substring(0, 4));
+  	const log = Math.log(leadingDigits) / Math.LN10 + 0.00000001;
+  	const n = str.length - 1;
+  	return n + (log - parseInt(log));
+  }
+  let rep2 = (rep2) => {
+  	if (rep2 == null) return rep2;
+  	let rep = String(rep2);
+  	const neg = rep.charAt(0) === '-';
+  	rep = neg ? rep.substring(1) : rep;
+
+  	let out = log10(rep);
+  	if (isNaN(out)) out = 0;
+  	out = Math.max(out - 9, 0); // @ -9, $0.50 earned is approx magnitude 1
+  	out = (neg ? -1 : 1) * out;
+  	out = out * 9 + 25; // 9 points per magnitude. center at 25
+  	// base-line 0 to darken and < 0 to auto hide (grep rephide)
+  	out = parseInt(out);
+  	return out;
+  }
+
+	wkd.api.getAccounts(["<%=prueba%>"], (err, res) => {
+
+
+    const name = res[0].name;
+    const reputation = rep2(res[0].reputation);
+    const wekuBalance = res[0].balance;
+    const wkdollars = res[0].sbd_balance
+    const witnesses = true;
+
+    witness_votes = res[0].witness_votes;
+
+    console.log(res[0].witness_votes);
+
+    if (witnesses) {
+      wkd.api.getAccounts(witness_votes, (err, witness) => {
+        console.log(witness);
+        witness.forEach((imgWitnees) => {
+          try {
+            let jsonMetadata = JSON.parse(imgWitnees.json_metadata);
+            if (jsonMetadata.profile && jsonMetadata.profile.profile_image)
+              document.querySelector('.Witneeses').innerHTML += `
+              <ul>
+                <li>
+                  <img class="imgWitneesVote" src="${jsonMetadata.profile.profile_image}" alt="" width="40" height="40">
+                  <p class="paddingTop"> <a class="weku-color-black" href="/@?u=${imgWitnees.name}">${imgWitnees.name}</a></p>
+                </li>
+              </ul>
+              `;
+
+              console.log(witness.name);
+          } catch {
+            const withoutImage = "http://www.logospng.com/images/64/user-pro-avatar-login-account-svg-png-icon-free-64755.png";
+          }
+        });
+      });
+    }
+
+    var received_vests = res[0].received_vesting_shares.split(' ')[0];
+		var delegated_vests = res[0].delegated_vesting_shares.split(' ')[0];
+		var vesting_shares = res[0].vesting_shares.split(' ')[0];
+		upvote_value = parseFloat(vesting_shares) + parseFloat(received_vests);
+		upvote_value = parseFloat(upvote_value) - parseFloat(delegated_vests);
+		upvote_value = parseFloat(upvote_value) * 1000000;
+		upvote_value = parseFloat(upvote_value) * 0.020;
+
+  wkd.api.getDynamicGlobalProperties((err, globals) => {
+    const totalSteem = Number(globals.total_vesting_fund_steem.split(' ')[0]);
+    const totalVests = Number(globals.total_vesting_shares.split(' ')[0]);
+    const userVests = Number(res[0].vesting_shares.split(' ')[0]);
+    const recvVests = Number(res[0].received_vesting_shares.split(' ')[0]);
+    const deleVests = Number(res[0].delegated_vesting_shares.split(' ')[0]);
+    const wkp = totalSteem * (userVests / totalVests);
+    const wkpr = totalSteem * (recvVests / totalVests);
+    const wkpd = totalSteem * (deleVests / totalVests);
+    const wkpt = wkp + wkpr - wkpd;
+    const today = moment(Date.now());
+    const crea = moment.utc(res[0].created);
+    const diff = today.diff(crea, 'days');
+    const lavo = moment.utc(res[0].last_vote_time);
+    const lavosec = today.diff(lavo, 'seconds');
+    const addpower = 20 / 86400 * lavosec;
+	  let votepower = res[0].voting_power/100+addpower;
+    if (votepower>100) {
+      votepower = 100;
+    }
+  	var tofull=0;
+  	if (votepower<100) { tofull = 100-votepower; }
+  	if (tofull>0) {
+  	  var fullin = tofull*4320;
+  	  var seconds = parseInt(fullin, 10);
+  	  var days = Math.floor(seconds / (3600*24));
+  	  seconds -= days*3600*24;
+  	  var hrs = Math.floor(seconds / 3600);
+  	  seconds -= hrs*3600;
+  	  var min = Math.floor(seconds / 60);
+  	  seconds -= min*60;
+  	  var full = "(full in " + days + "D " + hrs + "h" + min + "m" + seconds + "s)";
+  	} else {
+  	  var full = "";
+  	}
+
+  	document.querySelector(".usernameW").innerHTML = name;
+    res.forEach((account) => {
+      const jsonMetadata = JSON.parse(account.json_metadata);
+      const img = jsonMetadata.profile.profile_image;
+      const about = jsonMetadata.profile.about;
+      const website = jsonMetadata.profile.website;
+      const location = jsonMetadata.profile.location;
+
+      const imgLocation = "http://localhost:3000/svg/002-worldwide.svg";
+      const imgWebsite = "http://localhost:3000/svg/003-sign.svg";
+      const imgProfileLink = "http://localhost:3000/svg/003-sign.svg";
+
+      if (jsonMetadata.profile && jsonMetadata.profile.profile_image) {
+        document.querySelector('.imgProfile').src = img;
+      }else{
+        const withoutImage = "http://www.logospng.com/images/64/user-pro-avatar-login-account-svg-png-icon-free-64755.png";
+        document.querySelector('.imgProfile').src = withoutImage;
+      }
+
+      document.querySelector('.about').innerHTML = about;
+      document.querySelector('.website').innerHTML = ' ' + website;
+      document.querySelector('.location').innerHTML = ' ' + location;
+      document.querySelector('.rep').innerHTML = reputation;
+      document.querySelector('.balance').innerHTML = wekuBalance.split(' ')[0];
+      document.querySelector('.wkdollars').innerHTML = wkdollars.split(' ')[0];
+      document.querySelector('.power').innerHTML = wkp.toFixed(2);
+      document.querySelector('.vontingPowerbar').innerHTML = votepower.toFixed(2) + "%";
+      document.querySelector('.vontingPower').innerHTML = votepower.toFixed(2);
+
+      document.querySelector('.imgLink').src = imgWebsite;
+      document.querySelector('.imgLocation').src = imgLocation;
+      document.querySelector('.imgProfileLink').src = imgProfileLink;
+
+      var reputationDiv = document.querySelector('.reputation');
+      reputationDiv.style.background = "#ff732d";
+      reputationDiv.style.border = "1px solid #ccc";
+      reputationDiv.style.borderRadius = "50%";
+      reputationDiv.style.position = "absolute";
+      reputationDiv.style.left = "125px";
+      reputationDiv.style.top = "85px";
+      reputationDiv.style.width = "20px";
+      reputationDiv.style.height = "20px";
+
+      var reputationP = document.querySelector('#reputationP');
+      reputationP.style.color = "white";
+      reputationP.style.paddingTop = "3px";
+
+      move();
+      function move() {
+        var elem = document.getElementById("myBar");
+        var width = 1;;
+        var id = setInterval(frame, 10);
+        function frame() {
+          if (width >= votepower.toFixed(2)) {
+            clearInterval(id);
+          } else {
+            width++;
+            elem.style.width = width + '%';
+          }
+        }
+      }
+    });
+  });
+});
+
+wkd.api.getRewardFund('post',(err, data) => {
+  recent_claims = data.recent_claims.split(' ')[0];
+  reward_balance = data.reward_balance.split(' ')[0];
+});
+
+wkd.api.getCurrentMedianHistoryPrice((err, price) => {
+  var wkdPrice = price.base.split(' ')[0];
+  var wekuPrice = price.quote.split(' ')[0];
+  price_last = parseFloat(wkdPrice) / parseFloat(wekuPrice);
+  upvote_value = parseFloat(upvote_value) / parseFloat(recent_claims);
+  upvote_value = parseFloat(upvote_value) * parseFloat(reward_balance);
+  upvote_value = parseFloat(upvote_value) * parseFloat(price_last);
+
+  var finalUpvote = upvote_value.toFixed(2);
+  var slider = document.getElementById("myRange");
+  var output = document.getElementById("demo");
+  var output1 = document.getElementById("demo1");
+
+  output.innerHTML = slider.value ;
+  output.innerHTML = slider.max + "%";
+  output1.innerHTML = slider.value * finalUpvote /  100;
+
+  slider.oninput = function() {
+    output.innerHTML = this.value + "%";
+    output1.innerHTML =this.value * finalUpvote /  100;
+    }
+});
+
+wkd.api.getAccountHistory("<%=prueba%>", -1, 100, (err, res) => {
+  res.forEach((history) => {
+
+    var ops = history[1].op;
+
+    if (ops[0] == 'vote') {
+      //----------[Variables para votante]----------//
+      var author = ops[1].author;
+      var permlink = ops[1].permlink;
+      var voter = ops[1].voter;
+      var weight = ops[1].weight;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td>
+          <span>Voter: <span class="weku-color-background color-white paddingLados">${voter}</span></span>
+          <span>Author: <span class="weku-color-background color-white paddingLados">${author}</span></span>
+          <br>
+          <br>
+          <span>Permlink: <span class="weku-color-background paddingLados"><a class="color-white" href="http://main.weku.io/@${author}/${permlink}">${permlink}</a></span></span>
+          <br>
+          <br>
+          <span>Weight: <span class="weku-color-background color-white paddingLados">${weight}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}  </p></td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}  </p></td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}  </p></td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}  </p></td>
+      </tr>`;
+    }
+
+    if(ops[0] == 'comment') {
+      var author = ops[1].author;
+      var body = ops[1].body;
+      var parent_author = ops[1].parent_author;
+      var parent_permlink = ops[1].parent_permlink;
+      var permlink = ops[1].permlink;
+      var json_metadata = ops[1].json_metadata;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Parent author: <span class="weku-color-background color-white paddingLados">${parent_author}</span></span>
+          <br>
+          <br>
+          <span>Parent permlink: <span class="weku-color-background paddingLados"><a class="color-white" href="http://main.weku.io/@${parent_author}/${parent_permlink}">${parent_permlink}</a></span></span>
+          <br>
+          <br>
+          <span>Author: <span class="weku-color-background color-white paddingLados">${author}</span></span>
+          <br>
+          <br>
+          <span>Permlink: <span class="weku-color-background color-white paddingLados"><a class="color-white" href="http://main.weku.io/@${author}/${permlink}">${permlink}</a></span></span>
+          <br>
+          <br>
+          <p class="jsonMetadata">Json metadata: ${json_metadata} </p>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if (ops[0] == "author_reward") {
+      var author = ops[1].author;
+      var permlink = ops[1].permlink;
+      var sbd_payout = ops[1].sbd_payout;
+      var steem_payout = ops[1].steem_payout;
+      var vesting_payout = ops[1].vesting_payout;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Author: <span class="weku-color-background color-white paddingLados">${author}</span></span>
+          <br>
+          <br>
+          <span>Permlink: <span class="weku-color-background paddingLados"><a class="color-white" href="http://main.weku.io/@${author}/${permlink}">${permlink}</a></span></span>
+          <br>
+          <br>
+          <span>Sbd payout: <span class="weku-color-background color-white paddingLados">${sbd_payout}</span></span>
+          <br>
+          <br>
+          <span>Steem payout: <span class="weku-color-background color-white paddingLados">${steem_payout}</span></span>
+          <br>
+          <br>
+          <span>Vesting payout: <span class="weku-color-background color-white paddingLados">${vesting_payout}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if(ops[0] == "curation_reward") {
+      //----------[VAriables para reward]----------//
+      var comment_author = ops[1].comment_author;
+      var comment_permlink = ops[1].comment_permlink;
+      var curator = ops[1].curator;
+      var reward = ops[1].reward;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Curator: <span class="weku-color-background color-white paddingLados">${curator}</span></span>
+          <span>Reward: <span class="weku-color-background color-white paddingLados">${reward}</span></span>
+          <span>Comment author: <span class="weku-color-background color-white paddingLados">${comment_author}</span></span>
+          <br>
+          <br>
+          <span>Comment permlink: <span class="weku-color-background paddingLados"><a class="color-white" href="http://main.weku.io/@${comment_author}/${comment_permlink}">${comment_permlink}</a></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if(ops[0] == "producer_reward" ){
+      var producer = ops[1].producer;
+      var vesting_shares = ops[1].vesting_shares;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Curator: <span class="weku-color-background color-white paddingLados">${producer}</span></span>
+          <span>Reward: <span class="weku-color-background color-white paddingLados">${vesting_shares}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if (ops[0] == "claim_reward_balance") {
+      var account = ops[1].account;
+      var reward_sbd = ops[1].reward_sbd;
+      var reward_steem = ops[1].reward_steem;
+      var reward_vests = ops[1].reward_vests;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Account: <span class="weku-color-background color-white paddingLados">${account}</span></span>
+          <span>Reward steem: <span class="weku-color-background color-white paddingLados">${reward_steem}</span></span>
+          <span>Reward sbd: <span class="weku-color-background color-white paddingLados">${reward_sbd}</span></span>
+          <br>
+          <br>
+          <span>Reward vests: <span class="weku-color-background color-white paddingLados">${reward_vests}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if (ops[0] == "shutdown_witness") {
+      var owner = ops[1].owner;
+      document.querySelector('.generalHistory').innerHTML += '<tr><td>' + history[1].timestamp + '</td>' + '<td>' + history[1].block + '</td>' + '<td>' + ops[0] + '</td>' + '<td>' + history[1].trx_id + '</td>' + '</tr>';
+    }
+
+    if(ops[0] == "account_witness_vote"){
+      var account = ops[1].account;
+      var approve = ops[1].approve;
+      var witness = ops[1].witness;
+      document.querySelector('.generalHistory').innerHTML += '<tr><td>' + history[1].timestamp + '</td>' + '<td>' + history[1].block + '</td>' + '<td>' + ops[0] + '</td>' + '<td>' + history[1].trx_id + '</td>' + '</tr>';
+    }
+
+
+    if(ops[0] == "transfer") {
+      var amount = ops[1].amount;
+      var from = ops[1].from;
+      var memo = ops[1].memo;
+      var to = ops[1].to;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>From: <span class="weku-color-background color-white paddingLados">${from}</span></span>
+          <span>To: <span class="weku-color-background color-white paddingLados">${to}</span></span>
+          <span>Amount: <span class="weku-color-background color-white paddingLados">${amount}</span></span>
+          <span>Memo: <span class="weku-color-background color-white paddingLados">${memo}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if(ops[0] == "delegate_vesting_shares") {
+      var delegatee = ops[1].delegatee;
+      var delegator = ops[1].delegator;
+      var vesting_shares = ops[1].vesting_shares;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Delegator: <span class="weku-color-background color-white paddingLados">${delegator}</span></span>
+          <span>Delegatee: <span class="weku-color-background color-white paddingLados">${delegatee}</span></span>
+          <span>Vesting shares: <span class="weku-color-background color-white paddingLados">${vesting_shares}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if(ops[0] == "transfer_to_vesting") {
+      var amount = ops[1].amount;
+      var from = [1].from;
+      var to = ops[1].to;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>From: <span class="weku-color-background color-white paddingLados">${from}</span></span>
+          <span>To: <span class="weku-color-background color-white paddingLados">${to}</span></span>
+          <span>Amount: <span class="weku-color-background color-white paddingLados">${amount}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+    if(ops[0] == "return_vesting_delegation") {
+      var account = ops[1].account;
+      var vesting_shares = ops[1].vesting_shares;
+      document.querySelector('.generalHistory').innerHTML += `
+      <tr>
+        <td class="historyTd">
+          <span>Account: <span class="weku-color-background color-white paddingLados">${account}</span></span>
+          <span>Vesting shares: <span class="weku-color-background color-white paddingLados">${vesting_shares}</span></span>
+        </td>
+      </tr>
+      <tr>
+        <td> <p class="left">${history[1].timestamp}</p> </td>
+        <td> <p class="center weku-color-green color-white marginLados paddingBlocks">${history[1].block}</p> </td>
+        <td> <p class="center weku-color-blue color-white marginLados paddingOperations">${ops[0]}</p> </td>
+        <td> <p class="center weku-color-transaction color-white paddingTransaction">${history[1].trx_id}</p> </td>
+      </tr>`;
+    }
+
+//    document.querySelector('.generalHistory').innerHTML += history[1].block + history[1].op.vote +  "<hr>";
+  //console.log(history[1].op);
+    //console.log(history[1].op[1]);
+  });
+});
+</script>
+
+<% include partials/footer.ejs %>

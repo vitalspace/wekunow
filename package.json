@@ -1,0 +1,26 @@
+{
+  "name": "wekunow",
+  "version": "1.0.0",
+  "description": "Wekunow.com | Weku blockchain.",
+  "main": "index.js",
+  "scripts": {
+    "weku": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wekunow",
+    "blockchain"
+  ],
+  "author": "Hadrien Rivere",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.3.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "steem": "^0.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
