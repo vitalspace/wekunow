@@ -1,2 +1,2 @@
 # wekunow
-none
+A blockchain explorer from http://weku.io
